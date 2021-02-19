@@ -23,12 +23,9 @@ class UsersDBManager {
    private var password: Expression<String>!
    private var permissionLevel: Expression<String>!
     
-   // constructor of this class
    init () {
         
-       // exception handling
        do {
-            
            // path of document directory
            let path: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? ""
 
@@ -45,7 +42,6 @@ class UsersDBManager {
            permissionLevel = Expression<String>("permissionLevel")
             
        } catch {
-           // show error message if any
            print(error.localizedDescription)
        }
         
@@ -66,10 +62,7 @@ class UsersDBManager {
 
        // create empty array
        var userModels: [UserModel] = []
-
-       // get all users in descending order
-//      users = users.order(id.desc)
-
+    
        // exception handling
        do {
 

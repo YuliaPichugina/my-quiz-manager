@@ -15,6 +15,7 @@ struct EditQuestionView: View {
     
     var body: some View {
         
+        //feedback to teh user when question succesfully edited
         if questionEdited {
             Text("Question succesfully edited and saved!")
         }
@@ -61,7 +62,8 @@ struct EditQuestionView: View {
                     .disableAutocorrection(true)
                 
                 Button(action: {
-                    
+                
+                    //updating question and answers in the database
                     let questionsDBManager = QuestionsDBManager()
                     questionsDBManager.updateQuestion(idValue: questionModel.id, newText: questionModel.name)
                     

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//this is the big green button that is used across the app, it was saved as a separate view that can be re-used with different text and width where needed
 struct MainButton: View {
     
     var buttonText: String

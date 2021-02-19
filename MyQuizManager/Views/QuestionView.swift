@@ -20,6 +20,7 @@ struct QuestionView: View {
     
     var body: some View {
         
+        //feedback view after the user deleted the question
         if questionDeleted {
             Text("Question succesfully deleted!")
         }
@@ -29,23 +30,25 @@ struct QuestionView: View {
                 Text(questionModel.name)
                     .font(.headline)
                 
+                List (formatAnswerView()) {
+                    answer in
+                    Text(answer.answerText)
+                }
+                
                 //checking user's permission level
                 let permission = usersDBManager.userPermissions(userID: userID)
-            
+                
+                //only users's with Edit permissions can see the buttons to edit or delete question and answers
                 if permission == UsersPermissionLevel.Edit {
                     
-                    List (formatAnswerView()) {
-                        answer in
-                        Text(answer.answerText)
-                    }
                     Spacer()
-                        
+                    //re-directing to another view if user wants to edit the question
                         NavigationLink(destination: EditQuestionView(questionModel: questionModel, answerModels: AnswerDBManager().getAnswers().filter ({ $0.questionID == questionModel.id }))) {
                             MainButton(buttonText: "Edit Question and Answers", width: 300)
                         }
                         
                         Button(action: {
-                            //Deleted question and all the answers associated with this question
+                            //Delete question and all the answers associated with this question
                             QuestionsDBManager().deleteQuestion(idValue: questionModel.id)
                             AnswerDBManager().deleteAllAnswersForQuestion(questionID: questionModel.id)
                             self.questionDeleted = true
@@ -53,14 +56,7 @@ struct QuestionView: View {
                             MainButton(buttonText: "Delete Question and Answers", width: 300)
                         })
                     }
-                
-                else {
-                    List (answerModels) {
-                        answer in
-                        Text(answer.answerText)
-                    }
                     Spacer()
-                }
             }
             .onAppear(perform: {
                 let questionModels = QuestionsDBManager().getQuestions().filter ({ $0.id == questionModel.id })
@@ -70,6 +66,7 @@ struct QuestionView: View {
         }
     }
     
+    //formatting answers so they appear with correct uppercase indices 
     func formatAnswerView() -> [FormattedAnswerModel] {
         var indices = ["A", "B", "C", "D", "E"]
         var answers: [String] = []

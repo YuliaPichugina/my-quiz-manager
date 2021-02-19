@@ -42,9 +42,7 @@ struct AddQuizView: View {
                 }, label: {
                     MainButton(buttonText: "Save", width: 160)
                 })
-                .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 10)
-                .padding(.bottom, 10)
             }.padding()
         }
         

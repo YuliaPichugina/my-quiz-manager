@@ -22,6 +22,7 @@ struct QuizView: View {
     
     var body: some View {
         
+        //feedabck if the user deleted the quiz
         if quizDeleted {
             Text("\(quiz.name) succesfully deleted!")
         }
@@ -35,6 +36,7 @@ struct QuizView: View {
                 Text(quiz.name)
                     .font(.title)
                 
+                //users with Restricted permissions cannot see the answers so we will not show them the instruction to tap a question
                 if permission != UsersPermissionLevel.Restricted {
                 
                 Text("(Tap on question to see the answers)")
@@ -58,6 +60,7 @@ struct QuizView: View {
                 .padding()
                 Spacer()
                 
+                //we only show buttons to add question an delete quiz to users with Edit permissions
                 if permission == UsersPermissionLevel.Edit {
                     HStack {
                         NavigationLink(destination: AddQuestionView(quizAdded: $quizAdded, quizID: quiz.id)) {

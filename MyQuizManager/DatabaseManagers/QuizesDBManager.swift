@@ -20,10 +20,8 @@ class QuizesDBManager {
     private var id: Expression<Int64>!
     private var name: Expression<String>!
      
-    // constructor of this class
     init () {
          
-        // exception handling
         do {
              
             // path of document directory
@@ -39,7 +37,7 @@ class QuizesDBManager {
             id = Expression<Int64>("id")
             name = Expression<String>("name")
              
-            // check if the quizes's table is already created
+            // check if the table is already created
             if (!UserDefaults.standard.bool(forKey: "is_db_created")) {
  
                 // if not, then create the table
@@ -48,12 +46,10 @@ class QuizesDBManager {
                     t.column(name)
                 })
                  
-                // set the value to true, so it will not attempt to create the table again
                 UserDefaults.standard.set(true, forKey: "is_db_created")
             }
              
         } catch {
-            // show error message if any
             print(error.localizedDescription)
         }
          
@@ -68,18 +64,24 @@ class QuizesDBManager {
         }
     }
     
+    public func getQuizIdWithName(nameValue: String) -> Int64 {
+        
+        let quizes = getQuizes()
+        
+        let filtered = quizes.filter({ $0.name == nameValue })
+        
+        return filtered[0].id
+    }
+    
     public func getQuizes() -> [QuizModel] {
          
         // create empty array
         var quizModels: [QuizModel] = []
      
-        // get all users in descending order
+        // get all quizes in descending order so the newest will appear on top
         quizes = quizes.order(id.desc)
      
-        // exception handling
         do {
-     
-            // loop through all users
             for quiz in try db.prepare(quizes) {
      
                 // create new model in each loop iteration

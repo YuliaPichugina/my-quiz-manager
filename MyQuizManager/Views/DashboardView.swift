@@ -48,7 +48,7 @@ struct DashboardView: View {
                 }
             }
         }
-        //every time we open Dashboard, we refresh the list of quizes so teh user has up to date information
+        //every time we open Dashboard, we refresh the list of quizzes so the user has up to date information
         .onAppear(perform: {
             self.quizModels = QuizesDBManager().getQuizes()
         })

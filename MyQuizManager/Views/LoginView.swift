@@ -40,7 +40,8 @@ struct LoginView: View {
                 .cornerRadius(5.0)
                 .padding(.bottom, 20)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-            
+          
+            //if username/password is incorrect, feedback will be displayed to the user
             if authenticationFailed {
                 Text("Your username and/or password is incorrect. Please try again.")
                     .offset(y: -10)

@@ -63,6 +63,7 @@ struct AddQuestionView: View {
                 
                 VStack {
                     Button(action: {
+                        //if user wants to add another question, we refresh the view and show empty text fields
                         let dbManager: QuestionsDBManager = QuestionsDBManager()
                         dbManager.addQuestion(questionName: question, quizID: quizID)
                         addAnswers()
@@ -91,6 +92,8 @@ struct AddQuestionView: View {
             .padding()
         }
     }
+    
+    //saving answers to the database
     func addAnswers() {
         
         let questionsDBManager: QuestionsDBManager = QuestionsDBManager()
