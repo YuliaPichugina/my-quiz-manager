@@ -37,9 +37,6 @@ class AnswerDBManager {
             id = Expression<Int64>("id")
             answerText = Expression<String>("answerText")
             questionId = Expression<Int64>("questionId")
-             
-            // check if the quizes's table is already created
-           if (!UserDefaults.standard.bool(forKey: "is_db_created")) {
  
                 // if not, then create the table
                 try db.run(answers.create { (t) in
@@ -47,8 +44,6 @@ class AnswerDBManager {
                     t.column(answerText)
                     t.column(questionId)
                 })
-                UserDefaults.standard.set(true, forKey: "is_db_created")
-            }
              
         } catch {
             print(error.localizedDescription)

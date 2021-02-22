@@ -37,18 +37,12 @@ class QuestionsDBManager {
             id = Expression<Int64>("id")
             name = Expression<String>("name")
             quizId = Expression<Int64>("quizId")
-             
-           if (!UserDefaults.standard.bool(forKey: "is_db_created")) {
- 
-                // if not, then create the table
+            
                 try db.run(questions.create { (t) in
                     t.column(id, primaryKey: true)
                     t.column(name)
                     t.column(quizId)
                 })
-                 
-                UserDefaults.standard.set(true, forKey: "is_db_created")
-            }
              
         } catch {
             print(error.localizedDescription)
@@ -121,8 +115,8 @@ class QuestionsDBManager {
     public func deleteAllQuestionsForQuiz(quizID: Int64) {
         
         do {
-            let answer: Table = questions.filter(quizId == quizID)
-            try db.run(answer.delete())
+            let questionsForQuiz: Table = questions.filter(quizId == quizID)
+            try db.run(questionsForQuiz.delete())
         } catch {
             print(error.localizedDescription)
         }

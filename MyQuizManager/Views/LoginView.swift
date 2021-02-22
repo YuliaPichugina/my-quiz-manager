@@ -62,6 +62,14 @@ struct LoginView: View {
             })
         }
         .navigationBarBackButtonHidden(true)
+        
+        .onAppear(perform: {
+            let dbManager = UsersDBManager()
+            dbManager.addUser(userName: "Tom", userPassword: "Password123", userPermission: (UsersPermissionLevel(rawValue: "Restricted")!))
+            dbManager.addUser(userName: "Ellie", userPassword: "Password456", userPermission: (UsersPermissionLevel(rawValue: "View")!))
+            dbManager.addUser(userName: "Eddie", userPassword: "Password789", userPermission: (UsersPermissionLevel(rawValue: "View")!))
+            dbManager.addUser(userName: "Anna", userPassword: "Password106", userPermission: (UsersPermissionLevel(rawValue: "Edit")!))
+        })
     }
 }
 

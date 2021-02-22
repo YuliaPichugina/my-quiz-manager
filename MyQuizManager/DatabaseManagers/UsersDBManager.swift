@@ -24,22 +24,30 @@ class UsersDBManager {
    private var permissionLevel: Expression<String>!
     
    init () {
-        
-       do {
-           // path of document directory
-           let path: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? ""
 
-           // creating database connection
-           db = try Connection("\(path)/my_users.sqlite3")
+        do {
+            let path = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            
+            let fileURL = path.appendingPathComponent("users").appendingPathExtension("sqlite3")
+           
+            // creating database connection
+            db = try Connection(fileURL.path)
             
            // creating table object
            users = Table("users")
             
-           // create instances of each column
-           id = Expression<Int64>("id")
-           name = Expression<String>("name")
-           password = Expression<String>("password")
-           permissionLevel = Expression<String>("permissionLevel")
+            id = Expression<Int64>("id")
+            name = Expression<String>("name")
+            password = Expression<String>("password")
+            permissionLevel = Expression<String>("permissionLevel")
+
+            
+            try db.run(users.create { (t) in
+                t.column(id, primaryKey: true)
+                t.column(name)
+                t.column(password)
+                t.column(permissionLevel)
+            })
             
        } catch {
            print(error.localizedDescription)
@@ -47,7 +55,6 @@ class UsersDBManager {
         
    }
    
-    //this function is currently not called anywhere but it was used to add users to the database and can be used in the future if we add user registration functionality
     public func addUser(userName: String, userPassword: String, userPermission: UsersPermissionLevel) {
        do {
         try db.run(users.insert(name <- userName, password <- hashedPassword(password:userPassword), permissionLevel <- userPermission.rawValue))
@@ -84,7 +91,6 @@ class UsersDBManager {
        } catch {
            print(error.localizedDescription)
        }
-
        // return array
        return userModels
   }

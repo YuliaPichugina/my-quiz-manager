@@ -67,8 +67,8 @@ struct QuizView: View {
                             MainButton(buttonText: "Add Question", width: 160)
                         }
                         Button(action: {
-                            QuizesDBManager().deleteQuiz(idValue: quiz.id)
-                            QuestionsDBManager().deleteAllQuestionsForQuiz(quizID: quiz.id)
+                            
+                            deleteAllQuizdata()
                             
                             // refresh the quiz models array
                             self.quizModels = QuizesDBManager().getQuizes()
@@ -83,6 +83,15 @@ struct QuizView: View {
             .onAppear(perform: {
                 self.questionModels = QuestionsDBManager().getQuestions().filter ({ $0.quizId == quiz.id })
             })
+        }
+    }
+    
+    func deleteAllQuizdata() {
+        QuizesDBManager().deleteQuiz(idValue: quiz.id)
+        QuestionsDBManager().deleteAllQuestionsForQuiz(quizID: quiz.id)
+        
+        for model in questionModels {
+            AnswerDBManager().deleteAllAnswersForQuestion(questionID: model.id)
         }
     }
 }

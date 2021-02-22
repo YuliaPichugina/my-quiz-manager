@@ -36,18 +36,12 @@ class QuizesDBManager {
             // create instances of each column
             id = Expression<Int64>("id")
             name = Expression<String>("name")
-             
-            // check if the table is already created
-            if (!UserDefaults.standard.bool(forKey: "is_db_created")) {
  
                 // if not, then create the table
                 try db.run(quizes.create { (t) in
                     t.column(id, primaryKey: true)
                     t.column(name)
                 })
-                 
-                UserDefaults.standard.set(true, forKey: "is_db_created")
-            }
              
         } catch {
             print(error.localizedDescription)
